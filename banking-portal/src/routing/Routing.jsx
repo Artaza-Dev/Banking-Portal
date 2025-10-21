@@ -5,6 +5,7 @@ import Login from "../pages/login/Login"
 import Profile from '../pages/profile/Profile'
 import PublicRoute from './PublicRoute'
 import PrivateRoute from './PrivateRoute'
+import Dashboard from '../pages/dashboard/Dashboard'
 function Routing() {
   return (
     <>
@@ -12,7 +13,7 @@ function Routing() {
             <Routes>
                 <Route path='/' element={<PublicRoute><Login/></PublicRoute>}/>
                 <Route path='/signup' element={<PublicRoute><Signup/></PublicRoute>}/>
-                <Route path='/profile' element={<PrivateRoute><Profile/></PrivateRoute>}/>
+                <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
             </Routes>
         </BrowserRouter>
     </>

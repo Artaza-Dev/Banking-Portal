@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Button from "../../components/button/Button";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBuildingColumns,
@@ -6,7 +8,16 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+   const navigate = useNavigate();
+  function logoutHandler() {
+    localStorage.removeItem("isAuthenticated");
+    navigate("/");
+  }
+
   return (
     <>
       <div className="w-full h-16 backdrop-blur-md bg-white/10 border-b border-white/20 flex items-center justify-between px-3 sm:px-8">
@@ -19,17 +30,34 @@ function Navbar() {
             Nexus Bank
           </p>
         </div>
+        <div
+          className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white/30 backdrop-blur-sm border border-white/20 hover:scale-105 transition-all cursor-pointer flex justify-center items-center"
+          onClick={toggleMenu}
+        ></div>
+      </div>
 
-        
-        <div className="flex items-center gap-3 sm:gap-8">
-          <p className="text-xs xs:text-sm sm:text-md md:text-xl font-medium text-white hover:text-amber-200 transition-all cursor-pointer whitespace-nowrap">
-            Wallet
-          </p>
-          <p className="text-xs xs:text-sm sm:text-md font-medium md:text-xl text-white hover:text-amber-200 transition-all cursor-pointer whitespace-nowrap">
-            About Us
-          </p>
-          <div className="h-7 w-7 sm:h-10 sm:w-10 rounded-full bg-white/30 backdrop-blur-sm border border-white/20 hover:scale-105 transition-all cursor-pointer"></div>
-        </div>
+      {/* Slide Menu */}
+      <div
+        className={`fixed top-0 right-0 w-[260px] h-[345px] z-10 bg-white/20 backdrop-blur-md border-l rounded-2xl border-white/20 shadow-xl text-white p-6 flex flex-col gap-6 transform transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <button
+          className="self-end text-xl font-bold hover:text-purple-300"
+          onClick={toggleMenu}
+        >
+          ✕
+        </button>
+        <p className="text-lg font-medium cursor-pointer hover:text-purple-200">
+          Wallet
+        </p>
+        <p className="text-lg font-medium cursor-pointer hover:text-purple-200">
+          About Us
+        </p>
+        <p className="text-lg font-medium cursor-pointer hover:text-purple-200">
+          Settings
+        </p>
+         <button className='bg-purple-500 px-18 py-3 cursor-pointer rounded-2xl text-white font-semibold text-xl' onClick={logoutHandler}>Logout</button>
       </div>
     </>
   );

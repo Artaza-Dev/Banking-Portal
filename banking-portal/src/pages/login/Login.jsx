@@ -19,7 +19,7 @@ function Login() {
     const isValidation = users.find((u) => u.email === data.email && u.password === data.password);
     if (isValidation) {
         localStorage.setItem("isAuthenticated", "true");
-        navigate('/profile')
+        navigate('/dashboard')
     }else{
       console.log('Email or password is incorrect')
     }
