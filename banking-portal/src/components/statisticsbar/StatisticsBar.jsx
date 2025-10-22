@@ -13,7 +13,7 @@ function StatisticsBar() {
       {/* Income & Expense Section */}
       <div className="flex justify-between mb-6">
         <div>
-          <p className="flex items-center gap-1 text-sm font-semibold text-green-600">
+          <p className="flex items-center gap-1 text-sm font-semibold text-lime-800">
            <FontAwesomeIcon icon={faArrowUp} />
             $3 430
           </p>
@@ -29,11 +29,11 @@ function StatisticsBar() {
       </div>
 
       {/* Bar Chart Section */}
-      <div className="flex justify-between items-end h-32 mb-4">
+      <div className="flex justify-between items-end h-64 mb-4">
         <div className="w-[18%] bg-gray-200 rounded-md h-[60%]"></div>
         <div className="w-[18%] bg-gray-200 rounded-md h-[75%]"></div>
         <div className="w-[18%] bg-gray-200 rounded-md h-[50%]"></div>
-        <div className="w-[18%] bg-green-700 rounded-md h-[100%]"></div>
+        <div className="w-[18%] bg-lime-800 rounded-md h-[100%] hover:bg-lime-950"></div>
         <div className="w-[18%] bg-gray-200 rounded-md h-[40%]"></div>
       </div>
 

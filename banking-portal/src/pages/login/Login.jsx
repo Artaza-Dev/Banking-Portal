@@ -5,27 +5,53 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, useNavigate } from 'react-router-dom'
 import usersStore from '../../store/usersStore'
+import * as Yup from 'yup'; 
 function Login() {
   const navigate = useNavigate()
   const { users } = usersStore()
   const[email, setEmail] = useState("")
   const[password, setPassword] = useState("")
-  function loginHandler(e){
-    e.preventDefault()
-    let data = {
-      email,
-      password
-    }
-    const isValidation = users.find((u) => u.email === data.email && u.password === data.password);
-    if (isValidation) {
-        localStorage.setItem("isAuthenticated", "true");
-        navigate('/dashboard')
-    }else{
-      console.log('Email or password is incorrect')
-    }
-    setEmail("")
-    setPassword("")
+  const [errors, setErrors] = useState({}); 
 
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Please enter a valid email")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
+
+
+  async function loginHandler(e){
+    e.preventDefault()
+    try {
+      
+      await loginSchema.validate({ email, password }, { abortEarly: false });
+      setErrors({}); 
+
+      
+      const isValidation = users.find(
+        (u) => u.email === email && u.password === password
+      );
+
+      if (isValidation) {
+        localStorage.setItem("isAuthenticated", "true");
+        navigate(`/dashboard/${email}`);
+      } else {
+        setErrors({ auth: "Email or password is incorrect" });
+      }
+
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+
+      const validationErrors = {};
+      err.inner.forEach((error) => {
+        validationErrors[error.path] = error.message;
+      });
+      setErrors(validationErrors);
+    }
   }
 
   return (
@@ -40,7 +66,9 @@ function Login() {
 
     <div className="w-full px-1 mt-8 space-y-4">
       <Input type="text" placeholder="Enter your email" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setEmail(e.target.value)} />
+      {errors.email && <p className="text-red-400 text-sm">{errors.email}</p>}
       <Input type="password" placeholder="Enter your password" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setPassword(e.target.value)} />
+      {errors.password && <p className="text-red-400 text-sm">{errors.password}</p>}
     </div>
 
     <div className="w-full flex flex-col items-center mt-5">

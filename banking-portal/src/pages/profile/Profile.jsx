@@ -16,7 +16,7 @@ function Profile() {
   return (
     <>
       <div className="w-full min-h-screen  flex flex-col items-center relative">
-        {addpopup && (
+        {addpopup && ( 
           <PopupCard onclick={() => setAddPopup(false)} text="Add Money"/>
         )}
         {withdrawpopup && (
