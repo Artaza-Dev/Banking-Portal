@@ -5,7 +5,9 @@ function Transactioin() {
     <>
      <div className='w-full min-h-screen flex bg-zinc-300'>
         <SideBar/>
-        
+        <div className='w-full h-10'>
+           <p className='text-center text-3xl font-bold'>Transaction</p>
+       </div>
         
     </div>
     </>

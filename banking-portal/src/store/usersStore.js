@@ -11,11 +11,10 @@ const usersStore = create((set)=>({
             return {users: updateUser}
         })
     },
-    fetchUser: (email)=>{
-        set((state)=>{
-            const loginUser = state.users.find((val)=> val.email === email) || null
-            localStorage.setItem("CurrentUser", JSON.stringify(loginUser))
-            return {currentUser: loginUser || null }
+    setCurrentUser: (user)=>{
+        set(()=>{
+            localStorage.setItem("CurrentUser", JSON.stringify(user))
+            return {currentUser: user }
         })
     },
     addAmount: (amount, email) => {

@@ -9,21 +9,20 @@ function DocCard({ name, status, time }) {
   };
 
   return (
-    <div className="w-full py-3 flex flex-col sm:flex-row items-start sm:items-center border-b last:border-b-0 border-zinc-200 px-3 gap-2 sm:gap-0">
+    <div className="w-full py-3 2xl:py-4 flex flex-col sm:flex-row items-start sm:items-center border-b last:border-b-0 border-zinc-200 px-3 2xl:px-5 gap-2 sm:gap-0">
   <div className="w-full sm:w-[37%] flex items-center">
-    <img src={logo} className="h-12 w-15" alt="" />
-    <p className="text-sm sm:text-base text-zinc-600 ml-3">{name}</p>
+    <img src={logo} className="h-12 w-15 2xl:h-14 2xl:w-16" alt="" />
+    <p className="text-sm sm:text-base 2xl:text-lg text-zinc-600 ml-3">{name}</p>
   </div>
 
   <div className="w-full sm:w-[30%] flex justify-start sm:justify-center">
-    <span className={`text-xs font-semibold py-1 px-3 rounded-full ${getColor(status)}`}>
+    <span className={`text-xs 2xl:text-sm font-semibold py-1 px-3 2xl:py-2 2xl:px-4 rounded-full ${getColor(status)}`}>
       {status}
     </span>
   </div>
 
-  {/* Right Section: Time */}
   <div className="w-full sm:w-[30%] flex justify-start sm:justify-end">
-    <p className="text-xs sm:text-sm text-zinc-600">{time}</p>
+    <p className="text-xs sm:text-sm 2xl:text-base text-zinc-600">{time}</p>
   </div>
 </div>
 

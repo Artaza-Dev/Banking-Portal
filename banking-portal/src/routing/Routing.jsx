@@ -15,10 +15,10 @@ function Routing() {
             <Routes>
                 <Route path='/' element={<PublicRoute><Login/></PublicRoute>}/>
                 <Route path='/signup' element={<PublicRoute><Signup/></PublicRoute>}/>
-                <Route path='/dashboard/:useremail' element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
-                <Route path='/settingpage' element={<PrivateRoute><SettingPage/></PrivateRoute>}/>
+                <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
+                <Route path='/setting' element={<PrivateRoute><SettingPage/></PrivateRoute>}/>
                 <Route path='/transaction' element={<PrivateRoute><Transactioin/></PrivateRoute>}/>
-                <Route path='/faqpage' element={<PrivateRoute><FaqPage/></PrivateRoute>}/>
+                <Route path='/faq' element={<PrivateRoute><FaqPage/></PrivateRoute>}/>
             </Routes>
         </BrowserRouter>
     </>

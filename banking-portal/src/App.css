@@ -7,3 +7,18 @@
 .animate-popup {
   animation: popupAnimation 0.3s ease-out forwards;
 }
+
+/* Hide scrollbar for Chrome, Safari, and Edge */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Internet Explorer and Edge */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+}

@@ -1,8 +1,17 @@
 import React from 'react'
+import SideBar from "../../components/sidebar/SideBar"
 
 function SettingPage() {
   return (
-    <div>SettingPage</div>
+    <>
+    <div className='w-full min-h-screen flex bg-zinc-300'>
+        <SideBar/>
+        <div className='w-full h-10'>
+           <p className='text-center text-3xl font-bold'>Setting</p>
+       </div>
+        
+    </div>
+    </>
   )
 }
 
