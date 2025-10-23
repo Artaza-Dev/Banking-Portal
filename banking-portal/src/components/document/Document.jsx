@@ -22,7 +22,7 @@ function Document() {
   </div>
 
   {/* Cards List */}
-  <div className="2xl:space-y-2 overflow-y-auto 2xl:max-h-[calc(50vh-80px)]">
+  <div className="2xl:space-y-2 overflow-y-auto 2xl:max-h-[calc(50vh-80px)] hide-scrollbar">
     {docsData.map((doc, index) => (
       <DocCard
         key={index}

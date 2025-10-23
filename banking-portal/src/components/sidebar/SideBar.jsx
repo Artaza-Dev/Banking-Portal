@@ -13,21 +13,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import usersStore from "../../store/usersStore";
 import { NavLink } from "react-router-dom";
 
-function SideBar() {
+function SideBar({onclick}) {
   const { currentUser } = usersStore();
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  function logoutHandler() {
-    localStorage.removeItem("isAuthenticated");
-    navigate("/");
-  }
+  
 
   const menuItems = [
     { text: "My loans", icon: faMoneyCheckAlt, move: `/dashboard` },
     { text: "Settings", icon: faCog, move: "/setting" },
     { text: "Transaction", icon: faFileAlt, move: "/transaction" },
     { text: "FAQ", icon: faQuestionCircle, move: "/faq" },
-    { text: "Logout", icon: faArrowRightToBracket, clicked: logoutHandler },
+    { text: "Logout", icon: faArrowRightToBracket, clicked: onclick },
   ];
 
   return (

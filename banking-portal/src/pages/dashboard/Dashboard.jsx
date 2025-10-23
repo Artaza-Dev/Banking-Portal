@@ -3,10 +3,12 @@ import SideBar from '../../components/sidebar/SideBar';
 import ContentContainer from '../../components/contentcontainer/ContentContainer';
 import PopupCard from '../../components/popupCard/PopupCard'
 import TransactionPopup from '../../components/transactionpopup/TransactionPopup'
+import LogoutPopup from '../../components/logoutPopup/LogoutPopup';
 
 function Dashboard() {
   const [popup, setPopup] = useState(false);
   const [transactionpopup, setTransactionpopup] = useState(false);
+  const [logoutpopup, setLogoutPopup] = useState(false);
 
   function detailHandler() {
     setPopup(true);
@@ -14,6 +16,9 @@ function Dashboard() {
 
   function transactionHandler() {
     setTransactionpopup(true);
+  }
+  function logoutHandler() {
+    setLogoutPopup(true);
   }
   return (
     <>
@@ -24,14 +29,17 @@ function Dashboard() {
       )}
 
       {popup && (
-        <PopupCard onclick={() => setPopup(false)} text="Add Money" />
+        <PopupCard onclick={() => setPopup(false)}  />
       )}
       {transactionpopup && (
-        <TransactionPopup onclick={() => setTransactionpopup(false)} text="Add Money" />
+        <TransactionPopup onclick={() => setTransactionpopup(false)}  />
+      )}
+      {logoutpopup && (
+        <LogoutPopup onclick={() => setLogoutPopup(false)}  />
       )}
 
-      {/* ✅ Sidebar & Content - below overlay */}
-      <SideBar  />
+      {/*  Sidebar & Content - below overlay */}
+      <SideBar onclick={logoutHandler} />
       <ContentContainer onclick={detailHandler} onclicks={transactionHandler} />
     </div>
 
