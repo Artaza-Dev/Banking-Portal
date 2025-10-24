@@ -40,6 +40,7 @@ function Signup() {
     e.preventDefault();
     setLoading(true); // Start loading first
     try {
+       await new Promise((resolve) => setTimeout(resolve, 2000));
       await signupSchema.validate(
         { username, email, phone, password },
         { abortEarly: false }

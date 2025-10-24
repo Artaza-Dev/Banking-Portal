@@ -7,7 +7,7 @@ function LogoutPopup({ onclick }) {
   const navigate = useNavigate();
   async function logoutHandler() {
     setLoading(true);
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     localStorage.removeItem("isAuthenticated");
     setLoading(false);
     navigate("/");

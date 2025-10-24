@@ -33,7 +33,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       await loginSchema.validate({ email, password }, { abortEarly: false });
       setErrors({});
 
@@ -50,6 +50,7 @@ function Login() {
         navigate("/dashboard");
       } else {
         setErrors({ auth: "Email or password is incorrect" });
+        setTimeout(() => setErrors({}), 3000);
       }
     } catch (err) {
       // This code show each field error separatly

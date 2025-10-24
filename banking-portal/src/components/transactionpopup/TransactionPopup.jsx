@@ -31,7 +31,7 @@ function TransactionPopup({ onclick }) {
   async function addHandler() {
     setLoading(true)
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setErrors({});
       setSuccess("");
       await addAmountSchema.validate({ amount }, { abortEarly: false });

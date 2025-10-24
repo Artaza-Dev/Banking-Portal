@@ -1,11 +1,10 @@
 import React,{useState} from 'react'
 import StatisticsBar from '../statisticsbar/StatisticsBar'
 import Document from '../document/Document'
-import image1 from '../../assets/images.jfif'
+import image1 from '../../assets/house.png'
 import image2 from '../../assets/images3.png'
-import image3 from "../../assets/image5.png"
+import image3 from "../../assets/car.jfif"
 import usersStore from '../../store/usersStore'
-import TransactionPopup from '../transactionpopup/TransactionPopup'
 function ContentContainer({onclick, onclicks}) {
     const {currentUser} = usersStore()
     
