@@ -3,12 +3,13 @@ import usersStore from "../../store/usersStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCoins } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
-
+import Loader from "react-js-loader";
 function TransactionPopup({ onclick }) {
   const { currentUser, addAmount, withDrawAmount } = usersStore();
   const [amount, setAmount] = useState("");
-  const [errors, setErrors] = useState({}); // { amount: "..." }
-  const [success, setSuccess] = useState(""); // optional success message
+  const [errors, setErrors] = useState({}); 
+  const [success, setSuccess] = useState(""); 
+  const [loading, setLoading] = useState(false);
 
   // Schema transforms empty string -> undefined so required() triggers properly
   const baseSchema = Yup.number()
@@ -28,20 +29,19 @@ function TransactionPopup({ onclick }) {
   });
 
   async function addHandler() {
+    setLoading(true)
     try {
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
       setErrors({});
       setSuccess("");
       await addAmountSchema.validate({ amount }, { abortEarly: false });
-
       // validated -> call store with numeric amount
       addAmount(Number(amount), currentUser.email);
-
       setSuccess("Amount added successfully.");
       setAmount("");
       // optionally clear success after few seconds
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      // map yup errors to friendly object
       const validationErrors = {};
       if (err.inner && err.inner.length) {
         err.inner.forEach((e) => (validationErrors[e.path] = e.message));
@@ -51,11 +51,15 @@ function TransactionPopup({ onclick }) {
         validationErrors.amount = "Something went wrong";
       }
       setErrors(validationErrors);
+    }finally {
+      setLoading(false);
     }
   }
 
   async function withdrawHandler() {
+    setLoading(true)
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setErrors({});
       setSuccess("");
       await withdrawAmountSchema.validate({ amount }, { abortEarly: false });
@@ -65,6 +69,7 @@ function TransactionPopup({ onclick }) {
       // extra check: sufficient balance
       if (numeric > Number(currentUser?.balance || 0)) {
         setErrors({ amount: "Insufficient balance for this withdrawal." });
+        setLoading(false)
         return;
       }
 
@@ -83,13 +88,32 @@ function TransactionPopup({ onclick }) {
         validationErrors.amount = "Something went wrong";
       }
       setErrors(validationErrors);
+    }finally {
+      setLoading(false); // Stop loading
     }
   }
 
   return (
     <div className="absolute inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
       <div className="w-[85%] sm:w-[420px] bg-white rounded-2xl p-6 shadow-2xl text-center relative">
-        <button
+        {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "20px 0",
+                }}
+              >
+                <Loader
+                  type="spinner-cub"
+                  bgColor={"#152259"}
+                  color={"#152259"}
+                  size={100}
+                />
+              </div>
+            ) : (
+              <>
+                <button
           onClick={onclick}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-200 transition"
         >
@@ -138,6 +162,9 @@ function TransactionPopup({ onclick }) {
             Withdraw
           </button>
         </div>
+              </>
+            )}
+        
       </div>
     </div>
   );

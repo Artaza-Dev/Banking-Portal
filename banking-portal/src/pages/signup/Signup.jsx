@@ -1,51 +1,70 @@
-import React,{useState} from 'react'
-import Input from '../../components/input/Input'
-import Button from '../../components/button/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons'
-import userStore from '../../store/usersStore'
-import { NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import Input from "../../components/input/Input";
+import Button from "../../components/button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBuildingColumns, faEye, faEyeSlash  } from "@fortawesome/free-solid-svg-icons";
+import userStore from "../../store/usersStore";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import Loader from "react-js-loader";
 function Signup() {
-  const navigate = useNavigate()
-  const { registerUser, users } = userStore()
-  const[username, setUsername] = useState("")
-  const[email, setEmail] = useState("")
-  const[phone, setPhone] = useState("")
-  const[password, setPassword] = useState("")
+  const navigate = useNavigate();
+  const { registerUser, users } = userStore();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const[showpassword, setShowpassword] = useState(false)
 
   const signupSchema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().email("Please enter a valid email").required("Email is required"),
-  phone: Yup.string().matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
-            .required("Phone number is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
+    username: Yup.string().required("Username is required"),
+    email: Yup.string()
+      .email("Please enter a valid email")
+      .required("Email is required"),
+    phone: Yup.string().required("Phone number is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
 
-  async function signupHandler(e){
-    e.preventDefault()
+  
+  function viewHandler(){
+    setShowpassword(!showpassword)
+  }
+
+
+  async function signupHandler(e) {
+    e.preventDefault();
+    setLoading(true); // Start loading first
     try {
-      await signupSchema.validate({username, email, phone, password}, {abortEarly: false})
-      setErrors({})
+      await signupSchema.validate(
+        { username, email, phone, password },
+        { abortEarly: false }
+      );
 
-     const existingUser = users.find((user) => user.email === email);
+      const existingUser = users.find((user) => user.email === email);
+      if (existingUser) {
+        setErrors({
+          email: "This email is already registered. Please log in.",
+        });
+        setLoading(false);
+        setTimeout(() => setErrors({}), 3000);
+        return;
+      }
 
-    if (existingUser) {
-      setErrors({ email: "This email is already registered. Please log in." });
-      return;
-    }
+      const data = { username, email, phone, password, balance: 0 };
+      await registerUser(data);
 
-    const data = { username, email, phone, password, balance: 0 };
-    await registerUser(data);
-    navigate('/');
-    setUsername("")
-    setEmail("")
-    setPhone("")
-    setPassword("")
+      // Reset fields
+      setUsername("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+
+      navigate("/");
     } catch (err) {
       const validationErrors = {};
       if (err.inner && err.inner.length > 0) {
@@ -56,16 +75,17 @@ function Signup() {
         validationErrors[err.path] = err.message;
       }
       setErrors(validationErrors);
+      setTimeout(() => setErrors({}), 3000);
+    } finally {
+      setLoading(false); // Stop loading
     }
-    
-
   }
-  
 
   return (
-    <>     
-     <div className="bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-500 w-full min-h-screen flex items-center justify-center p-4">
-  <div className="
+    <>
+      <div className="bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-500 w-full min-h-screen flex items-center justify-center p-4">
+        <div
+          className="
     w-full max-w-[500px]     
     sm:max-w-[450px] 
     md:max-w-[400px] 
@@ -83,34 +103,110 @@ function Signup() {
     bg-white/10 backdrop-blur-md border border-white/20 
     rounded-2xl shadow-2xl 
     flex flex-col items-center p-6
-  ">
-    <div className="w-full flex flex-col items-center pt-4">
-      <FontAwesomeIcon icon={faBuildingColumns} className='text-5xl sm:text-6xl text-white mb-2 shadow-2xl'/>
-      <p className="text-2xl sm:text-3xl font-semibold text-white tracking-wide">Welcome Back</p>
-      <p className="text-xs sm:text-sm text-gray-200 mt-1">Sign in to your account</p>
-    </div>
+  "
+        >
+          <div className="w-full flex flex-col items-center pt-4">
+            <FontAwesomeIcon
+              icon={faBuildingColumns}
+              className="text-5xl sm:text-6xl text-white mb-2 shadow-2xl"
+            />
+            <p className="text-2xl sm:text-3xl font-semibold text-white tracking-wide">
+              Welcome Back
+            </p>
+            <p className="text-xs sm:text-sm text-gray-200 mt-1">
+              Sign in to your account
+            </p>
+          </div>
 
-    <div className="w-full mt-4 space-y-3">
-      <Input type="text" value={username} placeholder="Enter your username" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setUsername(e.target.value)} />
-      {errors.username && (<p className='text-sm text-red-400'>{errors.username}</p>)}
-      <Input type="email" value={email} placeholder="Enter your email" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setEmail(e.target.value)} />
-      {errors.email && (<p className='text-sm text-red-400'>{errors.email}</p>)}
-      <Input type="text" value={phone} placeholder="Enter your phone no" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setPhone(e.target.value)} />
-      {errors.phone&& (<p className='text-sm text-red-400'>{errors.phone}</p>)}
-      <Input type="password" value={password} placeholder="Enter your password" className="bg-white/20 text-white placeholder-gray-300" onchange={(e)=> setPassword(e.target.value)} />
-      {errors.password && (<p className='text-sm text-red-400'>{errors.password}</p>)}
-    </div>
+          <div className="w-full mt-4 space-y-3">
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "20px 0",
+                }}
+              >
+                <Loader
+                  type="spinner-cub"
+                  bgColor={"#152259"}
+                  color={"#152259"}
+                  size={100}
+                />
+              </div>
+            ) : (
+              <>
+                <Input
+                  type="text"
+                  value={username}
+                  placeholder="Enter your username"
+                  className="bg-white/20 text-white placeholder-gray-300"
+                  onchange={(e) => setUsername(e.target.value)}
+                />
+                {errors.username && (
+                  <p className="text-sm text-red-400">{errors.username}</p>
+                )}
+                <Input
+                  type="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  className="bg-white/20 text-white placeholder-gray-300"
+                  onchange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-400">{errors.email}</p>
+                )}
+                <Input
+                  type="tel"
+                  value={phone}
+                  placeholder="Enter your phone no"
+                  className="bg-white/20 text-white placeholder-gray-300"
+                  onchange={(e) => setPhone(e.target.value)}
+                />
+                {errors.phone && (
+                  <p className="text-sm text-red-400">{errors.phone}</p>
+                )}
+                <div className="w-full h-auto relative">
+                  <FontAwesomeIcon
+                    icon={showpassword ? faEye : faEyeSlash}
+                    className="text-md shadow-2xl text-white absolute top-4.5 right-4 cursor-pointer"
+                    onClick={viewHandler}
+                  />
+                  <Input
+                    type={showpassword ? "text" : "password"}
+                    value={password}
+                    placeholder="Enter your password"
+                    className="bg-white/20 text-white placeholder-gray-300"
+                    onchange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                {errors.password && (
+                  <p className="text-sm text-red-400">{errors.password}</p>
+                )}
+              </>
+            )}
+          </div>
 
-    <div className="w-full flex flex-col items-center mt-5">
-      <Button className="w-[80%] bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg shadow-md transition-all duration-300" text="Sign Up" onclick={signupHandler} />
-      <p className="text-white text-xs sm:text-sm mt-2">Do you have an account? <NavLink to="/" className="text-indigo-300 cursor-pointer hover:text-zinc-800">Sign In</NavLink></p>
-    </div>
-  </div>
-</div>
-
-
+          <div className="w-full flex flex-col items-center mt-5">
+            <Button
+              className="w-[80%] bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg shadow-md transition-all duration-300"
+              text={loading ? "Please wait..." : "Sign Up"}
+              onclick={signupHandler}
+            />
+            <p className="text-white text-xs sm:text-sm mt-2">
+              Do you have an account?{" "}
+              <NavLink
+                to="/"
+                className="text-indigo-300 cursor-pointer hover:text-zinc-800"
+              >
+                Sign In
+              </NavLink>
+            </p>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
