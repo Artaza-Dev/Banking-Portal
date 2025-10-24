@@ -73,7 +73,7 @@ function ContentContainer({onclick, onclicks}) {
           className="w-full sm:w-[48%] md:w-[30%] bg-zinc-100 rounded-lg p-5 flex flex-col justify-between shadow-sm 2xl:h-full"
         >
           <div className="mb-4 mt-4">
-            <img src={val.image} className="h-15 2xl:h-20 w-15 2xl:w-20 mb-3 object-cover" alt="" />
+            <img src={val.image} className="h-15 2xl:h-20 w-15 2xl:w-20 mb-3 object-cover mix-blend-multiply" alt="" />
             <p className="text-sm 2xl:text-base font-medium text-zinc-700">
               {val.head}
             </p>

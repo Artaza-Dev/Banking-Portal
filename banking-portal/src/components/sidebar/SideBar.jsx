@@ -25,6 +25,17 @@ function SideBar({onclick}) {
     { text: "FAQ", icon: faQuestionCircle, move: "/faq" },
     { text: "Logout", icon: faArrowRightToBracket, clicked: onclick },
   ];
+   
+  // This code is to generate the 1st characters of first and last name
+  let Name = currentUser?.username.toUpperCase().split(" ")
+  let char = ""
+  for (let i = 0; i <= Name.length-1; i++) {
+    let element = Name[i].charAt(0);
+    char += element
+  }
+
+  
+  
 
   return (
     <>
@@ -57,7 +68,7 @@ function SideBar({onclick}) {
 
           <div className="flex items-center gap-4 mb-10">
             <div className="w-14 h-14 2xl:w-20 2xl:h-20 bg-lime-800 rounded-full flex items-center justify-center text-lg 2xl:text-2xl font-bold text-white">
-              HA
+              {char}
             </div>
             <div>
               <p className="text-lg 2xl:text-2xl font-semibold text-gray-800">

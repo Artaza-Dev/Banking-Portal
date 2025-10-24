@@ -50,7 +50,6 @@ function Login() {
         navigate("/dashboard");
       } else {
         setErrors({ auth: "Email or password is incorrect" });
-        setTimeout(() => setErrors({}), 3000);
       }
     } catch (err) {
       // This code show each field error separatly
@@ -63,9 +62,6 @@ function Login() {
         validationErrors[err.path] = err.message;
       }
       setErrors(validationErrors);
-      setTimeout(() => {
-        setErrors({});
-      }, 3000);
     }finally {
       setLoading(false); // Stop loading
     }

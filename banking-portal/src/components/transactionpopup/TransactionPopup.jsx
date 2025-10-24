@@ -117,10 +117,10 @@ function TransactionPopup({ onclick }) {
           onClick={onclick}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-200 transition"
         >
-          <FontAwesomeIcon icon={faTimes} className="text-lg text-gray-600 hover:text-gray-800" />
+          <FontAwesomeIcon icon={faTimes} className="text-lg text-gray-600 hover:text-gray-800 cursor-pointer" />
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-1 flex items-center gap-2 justify-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-1 flex items-center gap-2 justify-center ">
           <FontAwesomeIcon icon={faCoins} className="text-yellow-500" />
           Manage Funds
         </h2>
@@ -151,13 +151,13 @@ function TransactionPopup({ onclick }) {
         <div className="flex justify-between gap-4">
           <button
             onClick={addHandler}
-            className="w-1/2 py-2 bg-lime-800 text-white rounded-lg hover:bg-lime-700 transition font-medium"
+            className="w-1/2 py-2 bg-lime-800 text-white rounded-lg hover:bg-lime-700 transition font-medium cursor-pointer"
           >
             Add
           </button>
           <button
             onClick={withdrawHandler}
-            className="w-1/2 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
+            className="w-1/2 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium cursor-pointer"
           >
             Withdraw
           </button>

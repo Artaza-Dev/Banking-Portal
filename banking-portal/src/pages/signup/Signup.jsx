@@ -24,7 +24,7 @@ function Signup() {
     email: Yup.string()
       .email("Please enter a valid email")
       .required("Email is required"),
-    phone: Yup.string().required("Phone number is required"),
+    phone: Yup.string().min(10, "Phone no must be 10 characters").required("Phone number is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
@@ -52,7 +52,6 @@ function Signup() {
           email: "This email is already registered. Please log in.",
         });
         setLoading(false);
-        setTimeout(() => setErrors({}), 3000);
         return;
       }
 
@@ -64,7 +63,6 @@ function Signup() {
       setEmail("");
       setPhone("");
       setPassword("");
-
       navigate("/");
     } catch (err) {
       const validationErrors = {};
@@ -76,7 +74,6 @@ function Signup() {
         validationErrors[err.path] = err.message;
       }
       setErrors(validationErrors);
-      setTimeout(() => setErrors({}), 3000);
     } finally {
       setLoading(false); // Stop loading
     }
